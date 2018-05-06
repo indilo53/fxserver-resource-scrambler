@@ -1,0 +1,19 @@
+{
+  "name": "resource-scrambler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jérémie N'gadi",
+  "license": "ISC",
+  "dependencies": {
+    "copy-dir": "^0.3.0",
+    "del": "^3.0.0",
+    "glob": "^7.1.2",
+    "ncp": "^2.0.0",
+    "node-lua": "^1.0.4",
+    "uuid": "^3.2.1"
+  }
+}
