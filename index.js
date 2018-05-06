@@ -62,15 +62,20 @@ const systemResources = [
 ];
 
 const systemServerEvents = [];
+const systemNetEvents    = [];
 const systemClientEvents = [];
+
 const oldServerEvents    = [];
+const oldNetEvents       = [];
 const oldClientEvents    = [];
-const newServerEvents    = [];
-const newClientEvents    = [];
-const serverScripts      = [];
-const clientScripts      = [];
 const oldEsxCallbacks    = [];
+const newServerEvents    = [];
+const newNetEvents       = [];
+const newClientEvents    = [];
 const newEsxCallbacks    = [];
+
+const serverScripts = [];
+const clientScripts = [];
 
 console.log('Cloning resources');
 
@@ -191,10 +196,31 @@ function main() {
 
             if(isSystemResource) {
 
+              if(systemNetEvents.indexOf(match[1]) == -1)
+                systemNetEvents.push(match[1]);
+
+            } else {
+
+              if(oldNetEvents.indexOf(match[1]) == -1)
+                oldNetEvents.push(match[1]);
+            }
+
+          }
+
+        } while (match);
+
+        do {
+
+          match = addEventHandlerRe.exec(code);
+
+          if (match) {
+
+            if(isSystemResource) {
+
               if(systemClientEvents.indexOf(match[1]) == -1)
                 systemClientEvents.push(match[1]);
 
-            } else {
+            } else if(systemNetEvents.indexOf(match[1]) == -1) {
 
               if(oldClientEvents.indexOf(match[1]) == -1)
                 oldClientEvents.push(match[1]);
@@ -203,14 +229,10 @@ function main() {
           }
 
         } while (match);
+
       }
 
       for(let i=0; i<oldServerEvents.length; i++) {
-
-        if(newServerEvents.indexOf(oldServerEvents[i]) != -1) {
-          console.log('Skipping server event => ' + oldServerEvents[i]);
-          continue;
-        }
 
         let uid;
 
@@ -221,12 +243,18 @@ function main() {
         newServerEvents.push(uid);
       }
 
-      for(let i=0; i<oldClientEvents.length; i++) {
+      for(let i=0; i<oldNetEvents.length; i++) {
 
-        if(newClientEvents.indexOf(oldClientEvents[i]) != -1) {
-          console.log('Skipping client event => ' + oldClientEvents[i]);
-          continue;
-        }
+        let uid;
+
+        do {
+          uid = uuidv4();
+        } while (newNetEvents.indexOf(uid) != -1)
+
+        newNetEvents.push(uid);
+      }
+
+      for(let i=0; i<oldClientEvents.length; i++) {
 
         let uid;
 
@@ -249,11 +277,19 @@ function main() {
       }
 
       for(let i=0; i<systemServerEvents.length; i++) {
+        console.log('Skipping server event => ' + systemServerEvents[i]);
         oldServerEvents.push(systemServerEvents[i]);
         newServerEvents.push(systemServerEvents[i]);
       }
 
+      for(let i=0; i<systemNetEvents.length; i++) {
+        console.log('Skipping net event => ' + systemServerEvents[i]);
+        oldNetEvents.push(systemNetEvents[i]);
+        newNetEvents.push(systemNetEvents[i]);
+      }
+
       for(let i=0; i<systemClientEvents.length; i++) {
+        console.log('Skipping client event => ' + systemClientEvents[i]);
         oldClientEvents.push(systemClientEvents[i]);
         newClientEvents.push(systemClientEvents[i]);
       }
@@ -273,8 +309,8 @@ function main() {
             newCode = newCode.replace(new RegExp('TriggerEvent\\(["\']'        + oldServerEvents[j] + '["\']', 'g'),    'TriggerEvent(\''        + newServerEvents[j] + '\'');
           }
 
-          for(let j=0; j<oldClientEvents.length; j++) {
-            newCode = newCode.replace(new RegExp('TriggerClientEvent\\(["\']'  + oldClientEvents[j] + '["\']', 'g'), 'TriggerClientEvent(\''  + newClientEvents[j] + '\'');
+          for(let j=0; j<oldNetEvents.length; j++) {
+            newCode = newCode.replace(new RegExp('TriggerClientEvent\\(["\']'  + oldNetEvents[j] + '["\']', 'g'), 'TriggerClientEvent(\''  + newNetEvents[j] + '\'');
           }
 
           for(let j=0; j<oldEsxCallbacks.length; j++) {
@@ -305,10 +341,15 @@ function main() {
             newCode = newCode.replace(new RegExp('TriggerServerEvent\\(["\']'  + oldServerEvents[j] + '["\']', 'g'), 'TriggerServerEvent(\'' + newServerEvents[j] + '\'');
           }
 
+          for(let j=0; j<oldNetEvents.length; j++) {
+            newCode = newCode.replace(new RegExp('RegisterNetEvent\\(["\']'    + oldNetEvents[j] + '["\']\\)', 'g'), 'RegisterNetEvent(\''   + newNetEvents[j] + '\')');
+            newCode = newCode.replace(new RegExp('AddEventHandler\\(["\']'     + oldNetEvents[j] + '["\']',    'g'), 'AddEventHandler(\''    + newNetEvents[j] + '\'');
+            newCode = newCode.replace(new RegExp('TriggerEvent\\(["\']'        + oldNetEvents[j] + '["\']',    'g'), 'TriggerEvent(\''       + newNetEvents[j] + '\'');
+          }
+
           for(let j=0; j<oldClientEvents.length; j++) {
-            newCode = newCode.replace(new RegExp('RegisterNetEvent\\(["\']'    + oldClientEvents[j] + '["\']\\)', 'g'), 'RegisterNetEvent(\''   + newClientEvents[j] + '\')');
-            newCode = newCode.replace(new RegExp('AddEventHandler\\(["\']'     + oldClientEvents[j] + '["\']',    'g'), 'AddEventHandler(\''    + newClientEvents[j] + '\'');
-            newCode = newCode.replace(new RegExp('TriggerEvent\\(["\']'        + oldClientEvents[j] + '["\']',    'g'), 'TriggerEvent(\''       + newClientEvents[j] + '\'');
+            newCode = newCode.replace(new RegExp('AddEventHandler\\(["\']' + oldClientEvents[j] + '["\']', 'g'), 'AddEventHandler(\'' + newClientEvents[j] + '\'');
+            newCode = newCode.replace(new RegExp('TriggerEvent\\(["\']'    + oldClientEvents[j] + '["\']', 'g'), 'TriggerEvent(\''    + newClientEvents[j] + '\'');
           }
 
           for(let j=0; j<oldEsxCallbacks.length; j++) {
