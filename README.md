@@ -18,3 +18,5 @@ I don't know if it will work for everyone, this is just an experiment
 ### Best advice here is to never trust the client and make appropriate changes to your resources
 
 Source is ugly as hell, I will do a clean rewrite when I will have more time
+
+index-win was built using https://github.com/zeit/pkg, if you feel bad running a .exe just do an npm install (It will probably fail with node-lua, if so do it in a cygwin or git bash shell) and run ```node .```.
