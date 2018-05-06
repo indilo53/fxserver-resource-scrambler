@@ -1,2 +1,2 @@
-node_modules
-!node_modules/node-lua
+node_modules/*
+!node_modules/node-lua/*
