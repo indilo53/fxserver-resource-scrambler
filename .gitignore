@@ -1,7 +1,7 @@
 node_modules/*
 !node_modules/node-lua
 !node_modules/node-lua/*
-scrambled-resources
+scrambled-resources/*
 index-linux
 index-macos
 index-win.exe
