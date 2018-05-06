@@ -17,4 +17,4 @@ I don't know if it will work for everyone, this is just an experiment
 ### This is a step to prevent script-kiddies from triggering sensitive events using lua injector
 ### Best advice here is to never trust the client and make appropriate changes to your resources
 
-Source is ugly as hell, I will do a clean rewrite when I will have mmore time
+Source is ugly as hell, I will do a clean rewrite when I will have more time
