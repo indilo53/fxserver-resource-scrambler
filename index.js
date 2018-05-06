@@ -230,6 +230,27 @@ function main() {
 
         } while (match);
 
+        do {
+
+          match = triggerEventRe.exec(code);
+
+          if (match) {
+
+            if(isSystemResource) {
+
+              if(systemClientEvents.indexOf(match[1]) == -1)
+                systemClientEvents.push(match[1]);
+
+            } else if(systemNetEvents.indexOf(match[1]) == -1) {
+
+              if(oldClientEvents.indexOf(match[1]) == -1)
+                oldClientEvents.push(match[1]);
+            }
+
+          }
+
+        } while (match);
+
       }
 
       for(let i=0; i<oldServerEvents.length; i++) {
