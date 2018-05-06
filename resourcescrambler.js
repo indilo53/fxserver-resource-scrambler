@@ -17,6 +17,8 @@ class ResourceScrambler {
     this.esxTriggerServerCallbackRe  = /ESX\.TriggerServerCallback\(["'](.*?)["']/g;
 
     this.systemResources = [
+
+      // FiveM
       'fivem',
       'fivem-awesome1501',
       'fivem-map-hipster',
@@ -41,6 +43,10 @@ class ResourceScrambler {
       'betaguns',
       'gameInit',
       'keks',
+
+      // Vendor
+      'mysql-async',
+
     ];
 
     this.systemServerEvents = [];
@@ -58,6 +64,8 @@ class ResourceScrambler {
 
     this.serverScripts = [];
     this.clientScripts = [];
+
+    this.directories = [];
 
   }
 
@@ -95,34 +103,115 @@ class ResourceScrambler {
         split.pop();
 
         const directory    = split.join('/');
-        const resourceName = split.pop();
 
-        lua.DoFile('./loader.lua');
-
-        try {
-
-          lua.DoString(resourceCode);
-
-        } catch (e) { console.error('FAILED PARSING ' + resourceFiles[i] + e) }
-
-        lua.GetGlobal('__SCRIPTS');
-
-        const scripts       = lua.ToValue(-1);
-        const serverScripts = this.luaObj2Array(scripts.server);
-        const clientScripts = this.luaObj2Array(scripts.client);
-
-        for(let j=0; j<serverScripts.length; j++)
-          if(serverScripts[j].substr(0, 1) != '@' && fs.existsSync(directory + '/' + serverScripts[j]) && serverScripts[j].substr(-4) == '.lua')
-            this.serverScripts.push(directory + '/' + serverScripts[j]);
-
-        for(let j=0; j<clientScripts.length; j++)
-          if(clientScripts[j].substr(0, 1) != '@' && fs.existsSync(directory + '/' + clientScripts[j]) && clientScripts[j].substr(-4) == '.lua')
-            this.clientScripts.push(directory + '/' + clientScripts[j]);
+        if(this.directories.indexOf(directory) == -1)
+          this.directories.push(directory);
 
       }
 
-      if(cb != null)
-        cb();
+      glob(directory + '/**/__resource.lua' , (err, resourceFiles) => {
+
+        for(let i=0; i<resourceFiles.length; i++) {
+
+          const lua          = new nodelua.LuaState();
+          const resourceCode = fs.readFileSync(resourceFiles[i]).toString();
+          const split        = resourceFiles[i].split('/');
+
+          split.pop();
+
+          const directory    = split.join('/');
+          const resourceName = split.pop();
+
+          lua.DoFile('./loader.lua');
+
+          try {
+
+            lua.DoString(resourceCode);
+
+          } catch (e) { console.error('FAILED PARSING ' + resourceFiles[i] + e) }
+
+          lua.GetGlobal('__SCRIPTS');
+
+          const scripts       = lua.ToValue(-1);
+          const serverScripts = this.luaObj2Array(scripts.server).map(e => e);
+          const clientScripts = this.luaObj2Array(scripts.client).map(e => e);
+
+          for(let j=0; j<serverScripts.length; j++) {
+
+            if(serverScripts[j][0] == '@') {
+
+              const virtualPath   = serverScripts[j].substr(1);
+              const split         = virtualPath.split('/');
+              const _resourceName = split[0];
+
+              for(let i=0; i<this.directories.length; i++) {
+
+                const split2 = this.directories[i].split('/');
+
+                if(split2[split2.length - 1] == _resourceName) {
+
+                  split.shift();
+
+                  const filePath = split2.join('/') + '/' + split.join('/');
+
+                  if(this.serverScripts.indexOf(filePath) == -1 && fs.existsSync(filePath) && serverScripts[j].substr(-4) == '.lua')
+                    this.serverScripts.push(filePath);
+
+                  break;
+                }
+
+              }
+
+            } else {
+
+              if(fs.existsSync(directory + '/' + serverScripts[j]) && serverScripts[j].substr(-4) == '.lua')
+                this.serverScripts.push(directory + '/' + serverScripts[j]);
+
+            }
+
+          }
+
+          for(let j=0; j<clientScripts.length; j++) {
+
+            if(clientScripts[j][0] == '@') {
+
+              const virtualPath   = clientScripts[j].substr(1);
+              const split         = virtualPath.split('/');
+              const _resourceName = split[0];
+
+              for(let i=0; i<this.directories.length; i++) {
+
+                const split2 = this.directories[i].split('/');
+
+                if(split2[split2.length - 1] == _resourceName) {
+
+                  split.shift();
+
+                  const filePath = split2.join('/') + '/' + split.join('/');
+
+                  if(this.clientScripts.indexOf(filePath) == -1 && fs.existsSync(filePath) && clientScripts[j].substr(-4) == '.lua')
+                    this.clientScripts.push(filePath);
+
+                  break;
+                }
+
+              }
+
+            } else {
+
+              if(fs.existsSync(directory + '/' + clientScripts[j]) && clientScripts[j].substr(-4) == '.lua')
+                this.clientScripts.push(directory + '/' + clientScripts[j]);
+
+            }
+
+          }
+
+        }
+
+        if(cb != null)
+          cb();
+
+      });
 
     });
 
@@ -164,7 +253,6 @@ class ResourceScrambler {
             this.systemServerEvents.push(match[1]);
 
         } while (match);
-
         do {
 
           match = this.triggerEventRe.exec(code);
