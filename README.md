@@ -13,3 +13,9 @@ The best advice in general is to never trust the client and make appropriate cha
 I don't know if it will work for everyone, this is just an experiment. Please report issues you're having, and provide helpful information so that I can debug this - providing a copy of the script that is breaking the application is also helpful.
 
 index-win was built using [pkg](https://github.com/zeit/pkg), if you feel bad running a .exe just do an npm install (It will probably fail with node-lua, if so do it in a cygwin or git bash shell) and run ```node .```.
+
+---
+
+**You need to keep a copy of the original source code, when you make any change to the source : re-scramble all your original resources at once**
+
+**Don't forget to include fivem base resources and mysql-async if you use it**
