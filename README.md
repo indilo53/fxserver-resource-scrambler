@@ -15,6 +15,26 @@ index-win was built using [pkg](https://github.com/zeit/pkg), if you feel bad ru
 
 ---
 
+Event tables can be found in scrambled-resources/scrambler-events.json
+
+You can listen for the event scrambler:injectionDetected server-side to catch malicious users (don't forget to start scrambler-vac in server.cfg).
+
+```lua
+AddEventHandler('scrambler:injectionDetected', function(name, source, isServerEvent)
+
+  local eventType = 'client'
+  
+  if isServerEvent then
+    eventType = 'server'
+  end
+
+  print('Player id [' .. source .. '] attempted to use ' .. eventType .. ' event [' .. name .. ']')
+ 
+end)
+```
+
+---
+
 **You need to keep a copy of the original source code, when you make any change to the source : re-scramble all your original resources at once**
 
 **Do not forget to include fivem base resources and mysql-async if you use it**
