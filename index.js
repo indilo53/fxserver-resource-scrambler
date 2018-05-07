@@ -36,6 +36,9 @@ cpr('./resources', './scrambled_resources', {
       console.log(type + ' => [' + i + '/' + total + '] ' + file);
     });
 
+    scrambler.writeEventsTable();
+    scrambler.writeCheatDetector();
+
   });
 
 });

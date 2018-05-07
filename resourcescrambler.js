@@ -49,7 +49,7 @@ class ResourceScrambler {
 
     ];
 
-    this.systemServerEvents = [];
+    this.systemServerEvents = ['scrambler:injectionDetected'];
     this.systemNetEvents    = [];
     this.systemClientEvents = [];
 
@@ -65,7 +65,8 @@ class ResourceScrambler {
     this.serverScripts = [];
     this.clientScripts = [];
 
-    this.directories = [];
+    this.directories     = [];
+    this.targetDirectory = null;
 
   }
 
@@ -91,6 +92,8 @@ class ResourceScrambler {
   }
 
   loadScripts(directory, cb = null) {
+
+    this.targetDirectory = directory;
 
     glob(directory + '/**/__resource.lua' , (err, resourceFiles) => {
 
@@ -571,6 +574,91 @@ class ResourceScrambler {
       }
 
   }
+
+  writeEventsTable() {
+
+    const data = {
+      server: [],
+      client: [],
+    };
+
+    for(let i=0; i<this.oldServerEvents.length; i++)
+      if(this.oldServerEvents[i] != this.newServerEvents[i])
+        data.server.push({original: this.oldServerEvents[i], new: this.newServerEvents[i]});
+
+    for(let i=0; i<this.oldClientEvents.length; i++)
+      if(this.oldClientEvents[i] != this.newClientEvents[i])
+        data.client.push({original: this.oldClientEvents[i], new: this.newClientEvents[i]});
+
+    fs.writeFileSync(this.targetDirectory + '/scrambler-events.json', JSON.stringify(data, null, 2))
+
+  }
+
+  writeCheatDetector() {
+
+    const eventUid = uuidv4();
+
+    const resourceData =
+`resource_manifest_version '44febabe-d386-4d18-afbe-5e627f4af937'
+
+client_script 'client.lua'
+server_script 'server.lua'
+
+`;
+
+    let serverData =
+`RegisterServerEvent('${eventUid}')
+AddEventHandler('${eventUid}', function(name, isServerEvent)
+  local _source = source
+  TriggerEvent('scrambler:injectionDetected', name, _source, isServerEvent or false)
+end)
+
+`;
+
+    for(let i=0; i<this.oldServerEvents.length; i++) {
+
+      if(this.oldServerEvents[i] != this.newServerEvents[i]) {
+
+        serverData +=
+`RegisterServerEvent('${this.oldServerEvents[i]}')
+AddEventHandler('${this.oldServerEvents[i]}', function()
+  local _source = source
+  TriggerEvent('${eventUid}', '${this.oldServerEvents[i]}', _source, true)
+end)
+
+`;
+
+      }
+
+    }
+
+
+    let clientData = '';
+
+    for(let i=0; i<this.oldClientEvents.length; i++) {
+
+      if(this.oldClientEvents[i] != this.newClientEvents[i]) {
+
+      clientData +=
+`AddEventHandler('${this.oldClientEvents[i]}', function()
+  TriggerServerEvent('${eventUid}', '${this.oldClientEvents[i]}')
+end)
+
+`;
+
+      }
+
+    }
+
+    if(!fs.existsSync(this.targetDirectory + '/scrambler-vac'))
+      fs.mkdirSync(this.targetDirectory + '/scrambler-vac');
+
+    fs.writeFileSync(this.targetDirectory + '/scrambler-vac/__resource.lua', resourceData);
+    fs.writeFileSync(this.targetDirectory + '/scrambler-vac/server.lua',     serverData);
+    fs.writeFileSync(this.targetDirectory + '/scrambler-vac/client.lua',     clientData);
+
+  }
+
 
 }
 
