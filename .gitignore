@@ -4,6 +4,7 @@ node_modules/*
 resources/*
 !resources/.gitkeep
 scrambled_resources/*
+dist/*
 index-linux
 index-macos
 index-win.exe
