@@ -1,6 +1,8 @@
 node_modules/*
 !node_modules/node-lua
 !node_modules/node-lua/*
+resources/*
+!resources/.gitkeep
 scrambled-resources/*
 index-linux
 index-macos
