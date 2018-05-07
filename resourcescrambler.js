@@ -623,7 +623,7 @@ end)
 `RegisterServerEvent('${this.oldServerEvents[i]}')
 AddEventHandler('${this.oldServerEvents[i]}', function()
   local _source = source
-  TriggerEvent('${eventUid}', '${this.oldServerEvents[i]}', _source, true)
+  TriggerEvent('scrambler:injectionDetected', '${this.oldServerEvents[i]}', _source, true)
 end)
 
 `;
