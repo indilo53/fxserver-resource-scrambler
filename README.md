@@ -12,6 +12,4 @@ The best advice in general is to never trust the client and make appropriate cha
 
 I don't know if it will work for everyone, this is just an experiment. Please report issues you're having, and provide helpful information so that I can debug this - providing a copy of the script that is breaking the application is also helpful.
 
-Source is ugly as hell, I will do a clean rewrite when I will have more time
-
 index-win was built using [pkg](https://github.com/zeit/pkg), if you feel bad running a .exe just do an npm install (It will probably fail with node-lua, if so do it in a cygwin or git bash shell) and run ```node .```.
