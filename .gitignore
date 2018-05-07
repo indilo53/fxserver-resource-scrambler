@@ -3,7 +3,7 @@ node_modules/*
 !node_modules/node-lua/*
 resources/*
 !resources/.gitkeep
-scrambled-resources/*
+scrambled_resources/*
 index-linux
 index-macos
 index-win.exe
