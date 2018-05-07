@@ -17,7 +17,7 @@ index-win was built using [pkg](https://github.com/zeit/pkg), if you feel bad ru
 
 Event tables can be found in scrambled-resources/scrambler-events.json
 
-You can listen for the event scrambler:injectionDetected server-side to catch malicious users (don't forget to start scrambler-vac in server.cfg).
+You can listen for the event **scrambler:injectionDetected** server-side to catch malicious users (don't forget to start scrambler-vac in server.cfg).
 
 ```lua
 AddEventHandler('scrambler:injectionDetected', function(name, source, isServerEvent)
