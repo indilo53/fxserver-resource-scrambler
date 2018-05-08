@@ -256,6 +256,7 @@ class ResourceScrambler {
             this.systemServerEvents.push(match[1]);
 
         } while (match);
+
         do {
 
           match = this.triggerEventRe.exec(code);
@@ -579,12 +580,17 @@ class ResourceScrambler {
 
     const data = {
       server: [],
+      net   : [],
       client: [],
     };
 
     for(let i=0; i<this.oldServerEvents.length; i++)
       if(this.oldServerEvents[i] != this.newServerEvents[i])
         data.server.push({original: this.oldServerEvents[i], new: this.newServerEvents[i]});
+
+    for(let i=0; i<this.oldNetEvents.length; i++)
+      if(this.oldNetEvents[i] != this.newNetEvents[i])
+        data.net.push({original: this.oldNetEvents[i], new: this.newNetEvents[i]});
 
     for(let i=0; i<this.oldClientEvents.length; i++)
       if(this.oldClientEvents[i] != this.newClientEvents[i])
@@ -609,7 +615,7 @@ server_script 'server.lua'
     let serverData = "local events = {\n";
 
     for(let i=0; i<this.oldServerEvents.length; i++)
-      if(this.oldServerEvents[i] != this.newServerEvents[i])
+      if(this.oldServerEvents[i] != this.newServerEvents[i] && this.systemServerEvents.indexOf(this.oldServerEvents[i]) == -1)
         serverData += `  '${this.oldServerEvents[i]}',\n`;
 
     serverData += "}\n\n";
@@ -636,7 +642,7 @@ end
     let clientData = "local events = {\n";
 
     for(let i=0; i<this.oldClientEvents.length; i++)
-      if(this.oldClientEvents[i] != this.newServerEvents[i])
+      if(this.oldClientEvents[i] != this.newServerEvents[i] && this.systemClientEvents.indexOf(this.oldClientEvents[i]) == -1)
         clientData += `  '${this.oldClientEvents[i]}',\n`;
 
     clientData += "}\n\n";
