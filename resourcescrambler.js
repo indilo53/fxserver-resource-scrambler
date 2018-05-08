@@ -606,7 +606,15 @@ server_script 'server.lua'
 
 `;
 
-    let serverData =
+    let serverData = "local events = {\n";
+
+    for(let i=0; i<this.oldServerEvents.length; i++)
+      if(this.oldServerEvents[i] != this.newServerEvents[i])
+        serverData += `  '${this.oldServerEvents[i]}',\n`;
+
+    serverData += "}\n\n";
+
+    serverData +=
 `RegisterServerEvent('${eventUid}')
 AddEventHandler('${eventUid}', function(name, isServerEvent)
   local _source = source
@@ -615,40 +623,32 @@ end)
 
 `;
 
-    for(let i=0; i<this.oldServerEvents.length; i++) {
+    serverData +=
+`
+for i=1, #events, 1 do
+  RegisterServerEvent(events[i])
+  AddEventHandler(events[i], function()
+    local _source = source
+    TriggerEvent('scrambler:injectionDetected', events[i], _source, true)
+  end)
+end
+`
+    let clientData = "local events = {\n";
 
-      if(this.oldServerEvents[i] != this.newServerEvents[i]) {
+    for(let i=0; i<this.oldClientEvents.length; i++)
+      if(this.oldClientEvents[i] != this.newServerEvents[i])
+        clientData += `  '${this.oldClientEvents[i]}',\n`;
 
-        serverData +=
-`RegisterServerEvent('${this.oldServerEvents[i]}')
-AddEventHandler('${this.oldServerEvents[i]}', function()
-  local _source = source
-  TriggerEvent('scrambler:injectionDetected', '${this.oldServerEvents[i]}', _source, true)
-end)
-
-`;
-
-      }
-
-    }
-
-
-    let clientData = '';
-
-    for(let i=0; i<this.oldClientEvents.length; i++) {
-
-      if(this.oldClientEvents[i] != this.newClientEvents[i]) {
-
-      clientData +=
-`AddEventHandler('${this.oldClientEvents[i]}', function()
-  TriggerServerEvent('${eventUid}', '${this.oldClientEvents[i]}')
-end)
+    clientData +=
+`
+for i=1, #events, 1 do
+  AddEventHandler(events[i], function()
+    local _source = source
+    TriggerEvent('scrambler:injectionDetected', events[i], _source, true)
+  end)
+end
 
 `;
-
-      }
-
-    }
 
     if(!fs.existsSync(this.targetDirectory + '/scrambler-vac'))
       fs.mkdirSync(this.targetDirectory + '/scrambler-vac');
