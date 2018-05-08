@@ -13,6 +13,7 @@ local dummies = {
   'version',
   'export',
   'server_export',
+  'server_only',
   'resource_type',
   'map',
   'SetResourceInfo',
