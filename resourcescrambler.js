@@ -616,9 +616,9 @@ server_script 'server.lua'
 
     serverData +=
 `RegisterServerEvent('${eventUid}')
-AddEventHandler('${eventUid}', function(name, isServerEvent)
+AddEventHandler('${eventUid}', function(name)
   local _source = source
-  TriggerEvent('scrambler:injectionDetected', name, _source, isServerEvent or false)
+  TriggerEvent('scrambler:injectionDetected', name, _source, false)
 end)
 
 `;
@@ -639,12 +639,13 @@ end
       if(this.oldClientEvents[i] != this.newServerEvents[i])
         clientData += `  '${this.oldClientEvents[i]}',\n`;
 
+    clientData += "}\n\n";
+
     clientData +=
 `
 for i=1, #events, 1 do
   AddEventHandler(events[i], function()
-    local _source = source
-    TriggerEvent('scrambler:injectionDetected', events[i], _source, true)
+    TriggerServerEvent('${eventUid}', events[i])
   end)
 end
 
