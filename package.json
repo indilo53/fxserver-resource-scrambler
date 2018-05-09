@@ -11,7 +11,7 @@
   "dependencies": {
     "cpr": "^3.0.1",
     "glob": "^7.1.2",
-    "node-lua": "^1.0.4",
+    "node-lua": "git+https://github.com/indilo53/node-lua.git",
     "uuid": "^3.2.1"
   }
 }
