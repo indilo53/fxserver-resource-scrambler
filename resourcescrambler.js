@@ -1,7 +1,7 @@
 const fs      = require('fs');
 const glob    = require('glob');
 const uuidv4  = require('uuid/v4');
-const nodelua = require('nodelua');
+const nodelua = require('node-lua');
 
 class ResourceScrambler {
 
