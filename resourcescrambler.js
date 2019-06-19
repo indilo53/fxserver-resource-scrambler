@@ -7,14 +7,14 @@ class ResourceScrambler {
 
   constructor() {
 
-    this.addEventHandlerRe           = /AddEventHandler\(["'](.*?)["']/g;
-    this.triggerEventRe              = /TriggerEvent\(["'](.*?)["']/g;
-    this.registerServerEventRe       = /RegisterServerEvent\(["'](.*?)["']\)/g;
-    this.triggerClientEventRe        = /TriggerClientEvent\(["'](.*?)["']/g;
-    this.triggerServerEventRe        = /TriggerServerEvent\(["'](.*?)["']/g;
-    this.registerNetEventRe          = /RegisterNetEvent\(["'](.*?)["']\)/g;
-    this.esxRegisterServerCallbackRe = /ESX\.RegisterServerCallback\(["'](.*?)["']/g;
-    this.esxTriggerServerCallbackRe  = /ESX\.TriggerServerCallback\(["'](.*?)["']/g;
+    this.addEventHandlerRe           = /AddEventHandler\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerEventRe              = /TriggerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.registerServerEventRe       = /RegisterServerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerClientEventRe        = /TriggerClientEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerServerEventRe        = /TriggerServerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.registerNetEventRe          = /RegisterNetEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.esxRegisterServerCallbackRe = /ESX\.RegisterServerCallback\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.esxTriggerServerCallbackRe  = /ESX\.TriggerServerCallback\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
 
     this.systemResources = [
 
@@ -242,6 +242,7 @@ class ResourceScrambler {
         do {
 
           match = this.registerServerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -251,6 +252,7 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -260,6 +262,7 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -294,6 +297,7 @@ class ResourceScrambler {
         do {
 
           match = this.registerNetEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemNetEvents.indexOf(match[1]) == -1)
             this.systemNetEvents.push(match[1]);
@@ -303,6 +307,7 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemClientEvents.indexOf(match[1]) == -1)
             this.systemClientEvents.push(match[1]);
@@ -312,6 +317,7 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.systemClientEvents.indexOf(match[1]) == -1)
             this.systemClientEvents.push(match[1]);
@@ -346,6 +352,7 @@ class ResourceScrambler {
         do {
 
           match = this.registerServerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -355,6 +362,7 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -364,6 +372,7 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -373,6 +382,7 @@ class ResourceScrambler {
         do {
 
           match = this.esxRegisterServerCallbackRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldEsxCallbacks.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldEsxCallbacks.push(match[1]);
@@ -408,6 +418,7 @@ class ResourceScrambler {
         do {
 
           match = this.registerNetEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldNetEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldNetEvents.push(match[1]);
@@ -417,6 +428,7 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldClientEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldClientEvents.push(match[1]);
@@ -426,6 +438,7 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldClientEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldClientEvents.push(match[1]);
@@ -435,6 +448,7 @@ class ResourceScrambler {
         do {
 
           match = this.esxTriggerServerCallbackRe.exec(code);
+          match = match[match.length - 1];
 
           if(match && this.oldEsxCallbacks.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldEsxCallbacks.push(match[1]);
