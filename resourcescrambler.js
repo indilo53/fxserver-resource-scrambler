@@ -7,14 +7,14 @@ class ResourceScrambler {
 
   constructor() {
 
-    this.addEventHandlerRe           = /AddEventHandler\(["'](.*?)["']/g;
-    this.triggerEventRe              = /TriggerEvent\(["'](.*?)["']/g;
-    this.registerServerEventRe       = /RegisterServerEvent\(["'](.*?)["']\)/g;
-    this.triggerClientEventRe        = /TriggerClientEvent\(["'](.*?)["']/g;
-    this.triggerServerEventRe        = /TriggerServerEvent\(["'](.*?)["']/g;
-    this.registerNetEventRe          = /RegisterNetEvent\(["'](.*?)["']\)/g;
-    this.esxRegisterServerCallbackRe = /ESX\.RegisterServerCallback\(["'](.*?)["']/g;
-    this.esxTriggerServerCallbackRe  = /ESX\.TriggerServerCallback\(["'](.*?)["']/g;
+    this.addEventHandlerRe           = /AddEventHandler\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerEventRe              = /TriggerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.registerServerEventRe       = /RegisterServerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerClientEventRe        = /TriggerClientEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.triggerServerEventRe        = /TriggerServerEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.registerNetEventRe          = /RegisterNetEvent\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.esxRegisterServerCallbackRe = /ESX\.RegisterServerCallback\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
+    this.esxTriggerServerCallbackRe  = /ESX\.TriggerServerCallback\((\n["'](.*?)["']|\n\s+["'](.*?)["']|.+["'](.*?)["']|["'](.*?)["'])/g;
 
     this.systemResources = [
 
