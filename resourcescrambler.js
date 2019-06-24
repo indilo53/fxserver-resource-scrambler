@@ -242,7 +242,12 @@ class ResourceScrambler {
         do {
 
           match = this.registerServerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;            
+          }
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -252,7 +257,12 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -262,7 +272,12 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.systemServerEvents.indexOf(match[1]) == -1)
             this.systemServerEvents.push(match[1]);
@@ -297,7 +312,12 @@ class ResourceScrambler {
         do {
 
           match = this.registerNetEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.systemNetEvents.indexOf(match[1]) == -1)
             this.systemNetEvents.push(match[1]);
@@ -307,7 +327,12 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.systemClientEvents.indexOf(match[1]) == -1)
             this.systemClientEvents.push(match[1]);
@@ -317,7 +342,12 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.systemClientEvents.indexOf(match[1]) == -1)
             this.systemClientEvents.push(match[1]);
@@ -352,7 +382,12 @@ class ResourceScrambler {
         do {
 
           match = this.registerServerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -362,7 +397,12 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -372,7 +412,12 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldServerEvents.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldServerEvents.push(match[1]);
@@ -382,7 +427,12 @@ class ResourceScrambler {
         do {
 
           match = this.esxRegisterServerCallbackRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldEsxCallbacks.indexOf(match[1]) == -1 && this.systemServerEvents.indexOf(match[1]) == -1)
             this.oldEsxCallbacks.push(match[1]);
@@ -418,7 +468,12 @@ class ResourceScrambler {
         do {
 
           match = this.registerNetEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldNetEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldNetEvents.push(match[1]);
@@ -428,7 +483,12 @@ class ResourceScrambler {
         do {
 
           match = this.addEventHandlerRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldClientEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldClientEvents.push(match[1]);
@@ -438,7 +498,12 @@ class ResourceScrambler {
         do {
 
           match = this.triggerEventRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldClientEvents.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldClientEvents.push(match[1]);
@@ -448,7 +513,12 @@ class ResourceScrambler {
         do {
 
           match = this.esxTriggerServerCallbackRe.exec(code);
-          match = match[match.length - 1];
+          if (match != null){
+            let tmp_match = [];
+            tmp_match.push(match[0]);
+            tmp_match.push(match[5]);
+            match = tmp_match;
+          }
 
           if(match && this.oldEsxCallbacks.indexOf(match[1]) == -1 && this.systemClientEvents.indexOf(match[1]) == -1)
             this.oldEsxCallbacks.push(match[1]);
